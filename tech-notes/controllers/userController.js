@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 // @access Private
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select("-password").lean();
-  if (!users) {
+  if (!users.length > 0) {
     return res.status(400).json({ message: "No Users Found" });
   }
   res.status(200).json(users);

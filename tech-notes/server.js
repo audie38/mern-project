@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/notes", require("./routes/noteRoutes"));
 
 app.all("*", (req, res) => {
   res.status(404);
