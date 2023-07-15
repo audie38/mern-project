@@ -22,6 +22,8 @@ app.get("/", (req, res) => {
   res.status(200).send("OK!");
 });
 
+app.use("/api/users", require("./routes/userRoutes"));
+
 app.all("*", (req, res) => {
   res.status(404);
   if (req.accepts("html")) {
