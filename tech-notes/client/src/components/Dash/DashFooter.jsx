@@ -9,15 +9,15 @@ const DashFooter = () => {
 
   if (pathName !== "/dash") {
     goHomeButton = (
-      <button onClick={onGoHomeClicked}>
+      <button className="btn btn-dark mb-3" onClick={onGoHomeClicked}>
         Home
-        <i className="fa-solid fa-house"></i>
+        <i className="fa-solid fa-house ms-2"></i>
       </button>
     );
   }
 
   const content = (
-    <footer>
+    <footer className="container my-5">
       {goHomeButton}
       <p>Current User: </p>
       <p>Status: </p>

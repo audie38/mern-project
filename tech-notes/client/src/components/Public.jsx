@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const Public = () => {
   return (
     <section>
@@ -11,9 +9,6 @@ const Public = () => {
         <address>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, fugiat!</address>
         <p>Owner: Dan Davidson</p>
       </main>
-      <footer>
-        <Link to="/login">Employee Login</Link>
-      </footer>
     </section>
   );
 };
