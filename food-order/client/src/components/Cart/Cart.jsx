@@ -1,7 +1,8 @@
+import PropTypes from "prop-types";
 import classes from "./Cart.module.css";
 import Modal from "../UI/Modal";
 
-const Cart = () => {
+const Cart = (props) => {
   const cartItems = [
     {
       id: "c1",
@@ -23,11 +24,17 @@ const Cart = () => {
         <span>25.98</span>
       </div>
       <div className={classes.actions}>
-        <button className={classes["button--alt"]}>Close</button>
+        <button onClick={props.onHideCart} className={classes["button--alt"]}>
+          Close
+        </button>
         <button className={classes.button}>Order</button>
       </div>
     </Modal>
   );
+};
+
+Cart.propTypes = {
+  onHideCart: PropTypes.func.isRequired,
 };
 
 export default Cart;
