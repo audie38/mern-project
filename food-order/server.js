@@ -8,10 +8,8 @@ const path = require("path");
 const { logger, logEvents } = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOption");
-const mongoose = require("mongoose");
-const { connectMongo, connectSQL } = require("./config/dbConn");
+const sequelize = require("./config/dbConn");
 
-connectMongo();
 app.use(logger);
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -21,6 +19,8 @@ app.use("/", express.static(path.join(__dirname, "client", "dist")));
 app.get("/", (req, res) => {
   res.status(200).send("OK!");
 });
+
+app.use("/api/menu", require("./routes/menuRoutes"));
 
 app.all("*", (req, res) => {
   res.status(404);
@@ -35,25 +35,15 @@ app.all("*", (req, res) => {
 
 app.use(errorHandler);
 
-mongoose.connection.once("open", () => {
-  console.log("Connected to MongoDB...");
-});
-
-mongoose.connection.on("error", (err) => {
-  console.log(err);
-  logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, "mongoErrLog.log");
-});
-
-connectSQL
+sequelize
   .sync()
   .then(() => {
-    console.log("Connected to MySQL...");
+    console.log("Connected to DB...");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   })
   .catch((err) => {
     console.log(err);
-    logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, "sqlErrLog.log");
+    logEvents(`${err}`, "dbErr.log");
   });
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
