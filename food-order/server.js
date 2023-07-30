@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/menu", require("./routes/menuRoutes"));
+app.use("/api/order", require("./routes/orderRoutes"));
 
 app.all("*", (req, res) => {
   res.status(404);
