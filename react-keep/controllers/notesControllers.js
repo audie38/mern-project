@@ -55,12 +55,12 @@ const getNotesById = asyncHandler(async (req, res) => {
 // @access Public
 const addNotes = asyncHandler(async (req, res) => {
   const { title, label, description } = req.body;
-  if (!title || !label || !description) {
+  if (!title || !description) {
     return res.status(400).json({ message: "Fields Cannot be empty" });
   }
   const notes = await Notes.create({
     title: title,
-    label: label.replace(" ", "").trim(),
+    label: label?.replace(" ", "").trim(),
     description: description,
   });
   res.status(201).json({ data: notes });
