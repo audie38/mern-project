@@ -13,8 +13,9 @@ app.use(logger);
 app.use(cors(corsOptions));
 app.use(express.json());
 
+app.use(express.static(path.join(path.resolve(), "client/dist")));
 app.get("/", (req, res) => {
-  res.status(200).send("OK!");
+  res.sendFile(path.resolve(path.resolve(), "client/dist", "index.html"));
 });
 
 app.use("/api/note", require("./routes/notesRoutes"));
