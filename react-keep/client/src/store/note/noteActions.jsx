@@ -158,3 +158,34 @@ export const deleteNote = (id) => {
     }
   };
 };
+
+export const searchNotes = (query) => {
+  return async (dispatch) => {
+    const sendRequest = async () => {
+      const response = await fetch(`${API_BASE_URL}/note?query=${query}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to Fetch Data");
+      }
+      const responseData = await response.json();
+
+      return responseData?.data;
+    };
+    try {
+      dispatch(notificationActions.setStartLoading());
+      dispatch(noteActions.updateNeedRefresh(false));
+      const notesData = await sendRequest();
+      dispatch(noteActions.populateNotesData(notesData));
+      dispatch(notificationActions.setFinishLoading());
+    } catch (error) {
+      dispatch(noteActions.updateNeedRefresh(false));
+      dispatch(notificationActions.setNotifData(error));
+      dispatch(notificationActions.setFinishLoading());
+    }
+  };
+};
