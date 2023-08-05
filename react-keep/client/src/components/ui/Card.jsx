@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 const Card = (props) => {
-  const classes = `card shadow-lg p-5 my-3 rounded-3 ${props.className}`;
+  const classes = `card shadow-lg my-3 rounded-3 ${props.className}`;
   return <div className={classes}>{props.children}</div>;
 };
 

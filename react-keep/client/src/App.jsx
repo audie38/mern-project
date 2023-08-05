@@ -1,4 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchNotesData } from "./store/note/noteActions";
 
 import Root from "./components/layout/Root";
 import Error from "./pages/Error";
@@ -29,6 +32,18 @@ const router = createBrowserRouter([
   },
 ]);
 
+let initStart = true;
+
 export default function App() {
+  const dispatch = useDispatch();
+  const refresh = useSelector((state) => state.note.isNeedRefresh);
+
+  useEffect(() => {
+    if (initStart || refresh) {
+      dispatch(fetchNotesData());
+    }
+    initStart = false;
+  }, [dispatch, refresh]);
+
   return <RouterProvider router={router} />;
 }
