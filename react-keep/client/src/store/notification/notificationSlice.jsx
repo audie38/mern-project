@@ -18,6 +18,9 @@ const notificationSlice = createSlice({
     setFinishLoading(state) {
       state.isLoading = false;
     },
+    clearNotifData(state) {
+      state.message = null;
+    },
   },
 });
 

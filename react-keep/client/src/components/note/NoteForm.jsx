@@ -2,7 +2,7 @@ import Card from "../ui/Card";
 import useInput from "../../hooks/use-input";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { updateNoteData } from "../../store/note/noteActions";
+import { updateNoteData, addNewNote } from "../../store/note/noteActions";
 
 import Spinner from "../ui/Spinner";
 import Alert from "../ui/Alert";
@@ -15,7 +15,7 @@ const NoteForm = () => {
   const notesId = params?.id;
   const notesData = useSelector((state) => state.note.notes);
   const isLoading = useSelector((state) => state.notif.isLoading);
-  const isError = useSelector((state) => state.notif.message);
+  let isError = useSelector((state) => state.notif.message);
 
   let existingTitleData = {
     value: "",
@@ -50,6 +50,7 @@ const NoteForm = () => {
   const { value: title, error: titleInvalid, valid: titleIsValid, inputChangeHandler: onTitleChangeHandler, inputBlurHandler: onTitleBlurHandler, reset: resetTitle } = useInput(textValidation, existingTitleData);
   const { value: label, error: labelInvalid, valid: labelIsValid, inputChangeHandler: onLabelChangeHandler, inputBlurHandler: onLabelBlurHandler, reset: resetLabel } = useInput(textValidation, existingLabelData);
   const { value: desc, error: descInvalid, valid: descIsValid, inputChangeHandler: onDescChangeHandler, inputBlurHandler: onDescBlurHandler, reset: resetDesc } = useInput(textValidation, existingDescData);
+  const formValid = titleIsValid && labelIsValid && descIsValid;
 
   const formSubmitButton = isLoading ? (
     <button className="btn btn-secondary" type="button" disabled>
@@ -57,7 +58,7 @@ const NoteForm = () => {
       <span role="status">Save</span>
     </button>
   ) : (
-    <button type="submit" className="btn btn-primary w-25 ms-auto">
+    <button type="submit" className="btn btn-warning w-25 ms-auto" disabled={!formValid}>
       Save
     </button>
   );
@@ -70,7 +71,7 @@ const NoteForm = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (titleIsValid && labelIsValid && descIsValid) {
+    if (formValid) {
       if (confirm("Save Changes ?")) {
         if (notesId) {
           const notesObj = {
@@ -79,10 +80,19 @@ const NoteForm = () => {
             label: label,
             description: desc,
           };
-          dispatch(updateNoteData(notesObj));
+          dispatch(updateNoteData(notesObj)).catch((err) => (isError = err));
+        } else {
+          const notesObj = {
+            title: title,
+            label: label,
+            description: desc,
+          };
+          dispatch(addNewNote(notesObj)).catch((err) => (isError = err));
         }
-        resetFields();
-        navigate("/");
+        if (!isError) {
+          resetFields();
+          navigate("/");
+        }
       }
     }
   };

@@ -97,3 +97,64 @@ export const updateNoteData = (noteObj) => {
     }
   };
 };
+
+export const addNewNote = (noteObj) => {
+  return async (dispatch) => {
+    const sendRequest = async () => {
+      const response = await fetch(`${API_BASE_URL}/note`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(noteObj),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to Add New Notes");
+      }
+
+      await response.json();
+    };
+
+    try {
+      dispatch(notificationActions.setStartLoading());
+      await sendRequest();
+      dispatch(noteActions.updateNeedRefresh(true));
+      dispatch(notificationActions.setFinishLoading());
+    } catch (error) {
+      dispatch(notificationActions.setNotifData(error));
+      dispatch(notificationActions.setFinishLoading());
+    }
+  };
+};
+
+export const deleteNote = (id) => {
+  return async (dispatch) => {
+    const sendRequest = async () => {
+      const response = await fetch(`${API_BASE_URL}/note/${parseInt(id)}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to Delete Notes");
+      }
+
+      await response.json();
+    };
+
+    try {
+      dispatch(notificationActions.setStartLoading());
+      await sendRequest();
+      dispatch(noteActions.updateNeedRefresh(true));
+      dispatch(notificationActions.setFinishLoading());
+    } catch (error) {
+      dispatch(notificationActions.setNotifData(error));
+      dispatch(notificationActions.setFinishLoading());
+    }
+  };
+};
