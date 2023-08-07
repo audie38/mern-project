@@ -1,47 +1,33 @@
 import Card from "../ui/Card";
 import useInput from "../../hooks/use-input";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { updateNoteData, addNewNote } from "../../store/note/noteActions";
+import PropTypes from "prop-types";
 
 import Spinner from "../ui/Spinner";
 import Alert from "../ui/Alert";
 
-const NoteForm = () => {
+const NoteForm = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const params = useParams();
-  const notesId = params?.id;
-  const notesData = useSelector((state) => state.note.notes);
+  const notesData = props?.existingData;
   const isLoading = useSelector((state) => state.notif.isLoading);
   let isError = useSelector((state) => state.notif.message);
 
   let existingTitleData = {
-    value: "",
-    isTouched: false,
+    value: notesData?.title || "",
+    isTouched: notesData ? true : false,
   };
   let existingLabelData = {
-    value: "",
-    isTouched: false,
+    value: notesData?.label || "",
+    isTouched: notesData ? true : false,
   };
   let existingDescData = {
-    value: "",
-    isTouched: false,
+    value: notesData?.description || "",
+    isTouched: notesData ? true : false,
   };
-
-  if (notesId) {
-    const existingNotes = notesData.find((note) => parseInt(note.notesId) === parseInt(notesId));
-
-    if (existingNotes) {
-      existingTitleData.value = existingNotes.title;
-      existingTitleData.isTouched = true;
-      existingLabelData.value = existingNotes.label;
-      existingLabelData.isTouched = true;
-      existingDescData.value = existingNotes.description;
-      existingDescData.isTouched = true;
-    }
-  }
 
   const textValidation = (text) => {
     return text.trim() !== "";
@@ -73,9 +59,9 @@ const NoteForm = () => {
     event.preventDefault();
     if (formValid) {
       if (confirm("Save Changes ?")) {
-        if (notesId) {
+        if (notesData) {
           const notesObj = {
-            notesId: notesId,
+            notesId: notesData.notesId,
             title: title,
             label: label,
             description: desc,
@@ -127,6 +113,10 @@ const NoteForm = () => {
       </form>
     </Card>
   );
+};
+
+NoteForm.propTypes = {
+  existingData: PropTypes.object,
 };
 
 export default NoteForm;

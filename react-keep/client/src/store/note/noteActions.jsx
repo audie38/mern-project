@@ -56,6 +56,7 @@ export const fetchNoteDataById = (id) => {
       const data = await sendRequest();
       dispatch(noteActions.setNoteData(data));
       dispatch(notificationActions.setFinishLoading());
+      return data;
     } catch (error) {
       dispatch(notificationActions.setNotifData(error));
       dispatch(notificationActions.setFinishLoading());

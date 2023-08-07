@@ -37,7 +37,7 @@ const NoteItem = (props) => {
     </>
   );
 
-  return <Card className="text-center p-3">{content}</Card>;
+  return <Card className="text-center d-flex justify-content-center p-3 h-100">{content}</Card>;
 };
 
 NoteItem.propTypes = {

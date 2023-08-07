@@ -21,7 +21,7 @@ const NoteList = () => {
     content = <Spinner />;
   }
 
-  return <div className="row d-flex justify-content-start align-items-center my-5">{content}</div>;
+  return <div className="row d-flex justify-content-start align-items-stretch my-5">{content}</div>;
 };
 
 export default NoteList;
