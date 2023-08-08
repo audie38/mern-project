@@ -8,25 +8,32 @@ const { Op } = require("sequelize");
 const getAllNotes = asyncHandler(async (req, res) => {
   const query = req.query;
   const params = Object.values(query);
-  let response = await Notes.findAll();
+  let response = await Notes.findAll({
+    where: { userId: req?.user?.userId },
+  });
   if (params.length > 0) {
     response = await Notes.findAll({
       where: {
-        [Op.or]: [
+        [Op.and]: [
+          { userId: req?.user?.userId },
           {
-            title: {
-              [Op.iLike]: `%${params[0]}%`,
-            },
-          },
-          {
-            label: {
-              [Op.iLike]: `%${params[0]}%`,
-            },
-          },
-          {
-            description: {
-              [Op.iLike]: `%${params[0]}%`,
-            },
+            [Op.or]: [
+              {
+                title: {
+                  [Op.iLike]: `%${params[0]}%`,
+                },
+              },
+              {
+                label: {
+                  [Op.iLike]: `%${params[0]}%`,
+                },
+              },
+              {
+                description: {
+                  [Op.iLike]: `%${params[0]}%`,
+                },
+              },
+            ],
           },
         ],
       },
@@ -59,6 +66,7 @@ const addNotes = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Fields Cannot be empty" });
   }
   const notes = await Notes.create({
+    userId: req?.user?.userId,
     title: title,
     label: label?.replace(" ", "").trim(),
     description: description,
