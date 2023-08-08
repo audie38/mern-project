@@ -86,7 +86,7 @@ const NoteForm = (props) => {
   return (
     <Card className="p-5">
       {isLoading && <Spinner />}
-      {isError && <Alert message={isError.message} />}
+      {isError && <Alert message={isError} />}
       <form onSubmit={submitHandler}>
         <div className="mb-3">
           <label htmlFor="noteTitle" className="form-label">
