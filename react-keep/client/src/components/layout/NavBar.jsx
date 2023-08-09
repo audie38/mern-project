@@ -15,7 +15,7 @@ export default function NavBar() {
             <NavLink to="/note" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
               Note
             </NavLink>
-            <NavLink to="/auth" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+            <NavLink to="/login" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
               Login
               <i className="fa-solid fa-user ms-2"></i>
             </NavLink>

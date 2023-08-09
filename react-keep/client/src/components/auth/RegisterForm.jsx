@@ -68,7 +68,7 @@ const RegisterForm = () => {
       </form>
       <div className="my-3 text-center">
         <span>
-          {`Already have an account ?`} <Link to="/auth">Login Now</Link>
+          {`Already have an account ?`} <Link to="/login">Login Now</Link>
         </span>
       </div>
     </>

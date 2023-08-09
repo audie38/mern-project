@@ -40,7 +40,7 @@ export default function App() {
           },
         },
         {
-          path: "/auth",
+          path: "/login",
           element: <Login />,
         },
         {
