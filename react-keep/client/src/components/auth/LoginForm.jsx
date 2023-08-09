@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Alert from "../ui/Alert";
 import Spinner from "../ui/Spinner";
@@ -41,6 +42,11 @@ const LoginForm = () => {
         </div>
         <div className="mb-3">{formSubmitButton}</div>
       </form>
+      <div className="my-3 text-center">
+        <span>
+          {`Don't have an account yet ?`} <Link to="/register">Sign Up Here!</Link>
+        </span>
+      </div>
     </>
   );
 };
