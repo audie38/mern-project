@@ -14,7 +14,7 @@ const NoteForm = (props) => {
 
   const notesData = props?.existingData;
   const isLoading = useSelector((state) => state.notif.isLoading);
-  let isError = useSelector((state) => state.notif.message);
+  let isError = useSelector((state) => state.notif.fetchError);
 
   let existingTitleData = {
     value: notesData?.title || "",

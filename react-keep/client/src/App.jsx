@@ -8,6 +8,8 @@ import Error from "./pages/Error";
 
 import Note from "./pages/note/Note";
 import NoteAddEdit from "./pages/note/NoteAddEdit";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 let initStart = true;
 
@@ -36,6 +38,14 @@ export default function App() {
           loader: async ({ params }) => {
             return await dispatch(fetchNoteDataById(params.id));
           },
+        },
+        {
+          path: "/auth",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
         },
       ],
     },
