@@ -50,7 +50,12 @@ const getNotesById = asyncHandler(async (req, res) => {
   if (!noteId) {
     return res.status(400).json({ message: "Invalid Note Id" });
   }
-  const response = await Notes.findByPk(noteId);
+  // const response = await Notes.findByPk(noteId);
+  const response = await Notes.findOne({
+    where: {
+      [Op.and]: [{ userId: req?.user?.userId }, { notesId: noteId }],
+    },
+  });
   if (!response) {
     return res.status(404).json({ message: "Notes Not Found" });
   }

@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { fetchNotesData, fetchNoteDataById } from "./store/note/noteActions";
 
 import Root from "./components/layout/Root";
+import Private from "./components/layout/Private";
+import Public from "./components/layout/Public";
 import Error from "./pages/Error";
 
 import Note from "./pages/note/Note";
@@ -26,26 +28,46 @@ export default function App() {
         {
           path: "/",
           index: true,
-          element: <Note />,
+          element: (
+            <Private>
+              <Note />
+            </Private>
+          ),
         },
         {
           path: "/note",
-          element: <NoteAddEdit />,
+          element: (
+            <Private>
+              <NoteAddEdit />
+            </Private>
+          ),
         },
         {
           path: "/note/:id",
-          element: <NoteAddEdit />,
+          element: (
+            <Private>
+              <NoteAddEdit />
+            </Private>
+          ),
           loader: async ({ params }) => {
             return await dispatch(fetchNoteDataById(params.id));
           },
         },
         {
           path: "/login",
-          element: <Login />,
+          element: (
+            <Public>
+              <Login />
+            </Public>
+          ),
         },
         {
           path: "/register",
-          element: <Register />,
+          element: (
+            <Public>
+              <Register />
+            </Public>
+          ),
         },
       ],
     },

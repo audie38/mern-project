@@ -55,6 +55,7 @@ export const fetchNoteDataById = (id) => {
       if (!response.ok) {
         const message = responseData?.message || "Failed to Fetch Data";
         dispatch(notificationActions.setNotifData(message));
+        return null;
       }
 
       return responseData?.data;
