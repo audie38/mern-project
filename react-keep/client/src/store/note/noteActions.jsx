@@ -12,11 +12,15 @@ export const fetchNotesData = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
-      if (!response.ok) {
-        throw new Error("Failed to Fetch Data");
-      }
+
       const responseData = await response.json();
+
+      if (!response.ok) {
+        const message = responseData?.message || "Failed to Fetch Data";
+        dispatch(notificationActions.setNotifData(message));
+      }
 
       return responseData?.data;
     };
@@ -28,7 +32,7 @@ export const fetchNotesData = () => {
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
       dispatch(noteActions.updateNeedRefresh(false));
-      dispatch(notificationActions.setNotifData(error));
+      dispatch(noteActions.populateNotesData([]));
       dispatch(notificationActions.setFinishLoading());
     }
   };
@@ -43,11 +47,17 @@ export const fetchNoteDataById = (id) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
-      if (!response.ok) {
-        throw new Error("Failed to Fetch Data");
-      }
+
       const responseData = await response.json();
+
+      if (!response.ok) {
+        const message = responseData?.message || "Failed to Fetch Data";
+        dispatch(notificationActions.setNotifData(message));
+        return null;
+      }
+
       return responseData?.data;
     };
 
@@ -56,8 +66,8 @@ export const fetchNoteDataById = (id) => {
       const data = await sendRequest();
       dispatch(noteActions.setNoteData(data));
       dispatch(notificationActions.setFinishLoading());
+      return data;
     } catch (error) {
-      dispatch(notificationActions.setNotifData(error));
       dispatch(notificationActions.setFinishLoading());
     }
   };
@@ -72,6 +82,7 @@ export const updateNoteData = (noteObj) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           title: noteObj?.title,
           label: noteObj?.label,
@@ -79,11 +90,12 @@ export const updateNoteData = (noteObj) => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to Update Notes");
-      }
+      const responseData = await response.json();
 
-      await response.json();
+      if (!response.ok) {
+        const message = responseData?.message || "Failed to Update Notes";
+        dispatch(notificationActions.setNotifData(message));
+      }
     };
 
     try {
@@ -92,7 +104,6 @@ export const updateNoteData = (noteObj) => {
       dispatch(noteActions.updateNeedRefresh(true));
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
-      dispatch(notificationActions.setNotifData(error));
       dispatch(notificationActions.setFinishLoading());
     }
   };
@@ -107,14 +118,16 @@ export const addNewNote = (noteObj) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(noteObj),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to Add New Notes");
-      }
+      const responseData = await response.json();
 
-      await response.json();
+      if (!response.ok) {
+        const message = responseData?.message || "Failed to Add New Notes";
+        dispatch(notificationActions.setNotifData(message));
+      }
     };
 
     try {
@@ -123,7 +136,6 @@ export const addNewNote = (noteObj) => {
       dispatch(noteActions.updateNeedRefresh(true));
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
-      dispatch(notificationActions.setNotifData(error));
       dispatch(notificationActions.setFinishLoading());
     }
   };
@@ -138,22 +150,25 @@ export const deleteNote = (id) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to Delete Notes");
+        const message = responseData?.message || "Failed to Delete Notes";
+        dispatch(notificationActions.setNotifData(message));
       }
 
+      dispatch(noteActions.updateNeedRefresh(true));
       await response.json();
     };
 
     try {
       dispatch(notificationActions.setStartLoading());
       await sendRequest();
-      dispatch(noteActions.updateNeedRefresh(true));
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
-      dispatch(notificationActions.setNotifData(error));
       dispatch(notificationActions.setFinishLoading());
     }
   };
@@ -168,11 +183,15 @@ export const searchNotes = (query) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
-      if (!response.ok) {
-        throw new Error("Failed to Fetch Data");
-      }
+
       const responseData = await response.json();
+
+      if (!response.ok) {
+        const message = responseData?.message || "Failed to Fetch Data";
+        dispatch(notificationActions.setNotifData(message));
+      }
 
       return responseData?.data;
     };
@@ -184,7 +203,6 @@ export const searchNotes = (query) => {
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
       dispatch(noteActions.updateNeedRefresh(false));
-      dispatch(notificationActions.setNotifData(error));
       dispatch(notificationActions.setFinishLoading());
     }
   };

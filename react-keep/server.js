@@ -8,9 +8,12 @@ const { logger, logEvents } = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
 const sequelize = require("./config/db");
+const cookieParser = require("cookie-parser");
 
 app.use(logger);
 app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static(path.join(path.resolve(), "client/dist")));
@@ -18,6 +21,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.resolve(path.resolve(), "client/dist", "index.html"));
 });
 
+app.use("/api/user", require("./routes/usersRoutes"));
 app.use("/api/note", require("./routes/notesRoutes"));
 
 app.all("*", (req, res) => {

@@ -8,7 +8,7 @@ import Alert from "../../components/ui/Alert";
 
 const Note = () => {
   const dispatch = useDispatch();
-  const isError = useSelector((state) => state.notif.message);
+  const isError = useSelector((state) => state.notif.fetchError);
   const dismissAlertHandler = () => {
     dispatch(notificationActions.clearNotifData());
   };

@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { searchNotes } from "../../store/note/noteActions";
 
+let initialState = true;
+
 const NoteFilter = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
+
   const setSearchQueryHandler = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -15,6 +18,10 @@ const NoteFilter = () => {
   };
 
   useEffect(() => {
+    if (initialState) {
+      initialState = false;
+      return;
+    }
     dispatch(searchNotes(searchQuery));
   }, [dispatch, searchQuery]);
 

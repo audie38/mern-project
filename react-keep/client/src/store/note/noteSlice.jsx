@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const noteInitialState = {
   notes: [],
-  note: {},
+  note: null,
   isNeedRefresh: false,
 };
 

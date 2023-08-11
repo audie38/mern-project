@@ -10,7 +10,7 @@ const NoteList = () => {
     <>
       {notes.length > 0 &&
         notes.map((note) => (
-          <div className="col-md-4" key={note.notesId}>
+          <div className="col-md-4 my-3" key={note.notesId}>
             <NoteItem note={note} />
           </div>
         ))}
@@ -21,7 +21,7 @@ const NoteList = () => {
     content = <Spinner />;
   }
 
-  return <div className="row d-flex justify-content-start align-items-center my-5">{content}</div>;
+  return <div className="row d-flex justify-content-start align-items-stretch my-5">{content}</div>;
 };
 
 export default NoteList;

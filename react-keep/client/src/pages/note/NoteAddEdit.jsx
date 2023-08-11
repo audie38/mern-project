@@ -1,12 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import NoteForm from "../../components/note/NoteForm";
 
 const NoteAddEdit = () => {
-  const params = useParams();
-  const id = params.id;
-  const isEditMode = id ? true : false;
-
-  return <NoteForm isEdit={isEditMode} />;
+  const data = useLoaderData();
+  return <NoteForm existingData={data} />;
 };
 
 export default NoteAddEdit;
