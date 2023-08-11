@@ -1,5 +1,6 @@
 import { authActions } from "./authSlice";
 import { notificationActions } from "../notification/notificationSlice";
+import { noteActions } from "../note/noteSlice";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -7,7 +8,8 @@ const sendRequest = async (url, config, dispatch) => {
   const response = await fetch(url, config);
   const responseData = await response.json();
   if (!response.ok) {
-    dispatch(notificationActions.setErrorNotif(responseData?.message || "500 Internal Server Error"));
+    const message = responseData?.message || "500 Internal Server Error";
+    dispatch(notificationActions.setErrorNotif(message));
   }
   return responseData?.data;
 };
@@ -15,6 +17,7 @@ const sendRequest = async (url, config, dispatch) => {
 export const registerNewUser = (newUserObj) => {
   return async (dispatch) => {
     try {
+      dispatch(notificationActions.clearErrorNotif());
       const url = `${API_BASE_URL}/user`;
       const config = {
         method: "POST",
@@ -27,7 +30,8 @@ export const registerNewUser = (newUserObj) => {
       };
       dispatch(notificationActions.setStartLoading());
       const newUserData = await sendRequest(url, config, dispatch);
-      authActions.setUserInfo(newUserData);
+      dispatch(authActions.setUserInfo(newUserData));
+      dispatch(noteActions.updateNeedRefresh(true));
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
       dispatch(notificationActions.setFinishLoading());
@@ -38,6 +42,7 @@ export const registerNewUser = (newUserObj) => {
 export const loginUser = (userObj) => {
   return async (dispatch) => {
     try {
+      dispatch(notificationActions.clearErrorNotif());
       const url = `${API_BASE_URL}/user/auth`;
       const config = {
         method: "POST",
@@ -50,7 +55,8 @@ export const loginUser = (userObj) => {
       };
       dispatch(notificationActions.setStartLoading());
       const newUserData = await sendRequest(url, config, dispatch);
-      authActions.setUserInfo(newUserData);
+      dispatch(authActions.setUserInfo(newUserData));
+      dispatch(noteActions.updateNeedRefresh(true));
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
       dispatch(notificationActions.setFinishLoading());
@@ -61,6 +67,7 @@ export const loginUser = (userObj) => {
 export const logoutUser = () => {
   return async (dispatch) => {
     try {
+      dispatch(notificationActions.clearErrorNotif());
       const url = `${API_BASE_URL}/user/logout`;
       const config = {
         method: "POST",
@@ -72,7 +79,7 @@ export const logoutUser = () => {
       };
       dispatch(notificationActions.setStartLoading());
       await sendRequest(url, config, dispatch);
-      authActions.logoutUser();
+      dispatch(authActions.logoutUser());
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
       dispatch(notificationActions.setFinishLoading());

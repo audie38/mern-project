@@ -35,8 +35,6 @@ const registerUser = asyncHandler(async (req, res) => {
       data: {
         userId: newUser.userId,
         name: newUser.name,
-        email: newUser.email,
-        username: newUser.username,
       },
     });
   }
@@ -64,8 +62,6 @@ const authUser = asyncHandler(async (req, res) => {
         data: {
           userId: userExists.userId,
           name: userExists.name,
-          email: userExists.email,
-          username: userExists.username,
         },
       });
     }

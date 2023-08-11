@@ -1,8 +1,26 @@
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../../store/auth/authActions";
+import { useEffect } from "react";
 
 export default function NavBar() {
-  const isLoggedIn = useSelector((state) => state.auth.userInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const loggedInUser = useSelector((state) => state.auth.userInfo);
+  const isLoggedIn = !isNaN(loggedInUser?.userId);
+
+  const logoutHandler = () => {
+    if (confirm("Logout ?")) {
+      dispatch(logoutUser());
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [navigate, isLoggedIn]);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-warning bg-warning">
       <div className="container">
@@ -27,10 +45,10 @@ export default function NavBar() {
                 <NavLink to="/note" className={({ isActive }) => (isActive ? "nav-link align-self-lg-center active" : "nav-link align-self-lg-center")}>
                   Note
                 </NavLink>
-                <NavLink to="/" className={({ isActive }) => (isActive ? "btn btn-danger active" : "btn btn-danger")}>
+                <button onClick={logoutHandler} className="btn btn-danger active" type="button">
                   Logout
                   <i className="fa-solid fa-right-from-bracket ms-2"></i>
-                </NavLink>
+                </button>
               </>
             )}
           </div>

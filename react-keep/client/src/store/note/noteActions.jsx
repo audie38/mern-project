@@ -12,6 +12,7 @@ export const fetchNotesData = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       const responseData = await response.json();
@@ -46,6 +47,7 @@ export const fetchNoteDataById = (id) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       const responseData = await response.json();
@@ -79,6 +81,7 @@ export const updateNoteData = (noteObj) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           title: noteObj?.title,
           label: noteObj?.label,
@@ -114,6 +117,7 @@ export const addNewNote = (noteObj) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(noteObj),
       });
 
@@ -145,6 +149,7 @@ export const deleteNote = (id) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       const responseData = await response.json();
@@ -155,12 +160,13 @@ export const deleteNote = (id) => {
       }
 
       await response.json();
+      dispatch(noteActions.updateNeedRefresh(true));
     };
 
     try {
       dispatch(notificationActions.setStartLoading());
       await sendRequest();
-      dispatch(noteActions.updateNeedRefresh(true));
+
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
       dispatch(notificationActions.setFinishLoading());
@@ -177,6 +183,7 @@ export const searchNotes = (query) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       const responseData = await response.json();

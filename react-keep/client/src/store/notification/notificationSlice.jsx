@@ -24,6 +24,8 @@ const notificationSlice = createSlice({
     },
     clearNotifData(state) {
       state.fetchError = null;
+    },
+    clearErrorNotif(state) {
       state.submitError = null;
     },
   },

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const authInitialState = {
-  userInfo: null,
+  userInfo: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null,
 };
 
 const authSlice = createSlice({
@@ -9,15 +9,18 @@ const authSlice = createSlice({
   initialState: authInitialState,
   reducers: {
     setUserInfo(state, action) {
-      state.userInfo = {
+      const userData = {
         userId: parseInt(action?.payload?.userId),
         name: action?.payload?.name,
-        username: action?.payload?.username,
-        email: action?.payload?.email,
       };
+      state.userInfo = userData;
+      if (!isNaN(userData?.userId)) {
+        localStorage.setItem("userInfo", JSON.stringify(userData));
+      }
     },
     logoutUser(state) {
       state.userInfo = null;
+      localStorage.removeItem("userInfo");
     },
   },
 });
