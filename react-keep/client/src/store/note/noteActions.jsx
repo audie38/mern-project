@@ -159,14 +159,13 @@ export const deleteNote = (id) => {
         dispatch(notificationActions.setNotifData(message));
       }
 
-      await response.json();
       dispatch(noteActions.updateNeedRefresh(true));
+      await response.json();
     };
 
     try {
       dispatch(notificationActions.setStartLoading());
       await sendRequest();
-
       dispatch(notificationActions.setFinishLoading());
     } catch (error) {
       dispatch(notificationActions.setFinishLoading());

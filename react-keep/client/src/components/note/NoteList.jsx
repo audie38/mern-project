@@ -10,7 +10,7 @@ const NoteList = () => {
     <>
       {notes.length > 0 &&
         notes.map((note) => (
-          <div className="col-md-4" key={note.notesId}>
+          <div className="col-md-4 my-3" key={note.notesId}>
             <NoteItem note={note} />
           </div>
         ))}

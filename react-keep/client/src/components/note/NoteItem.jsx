@@ -21,7 +21,7 @@ const NoteItem = (props) => {
   const content = isLoading ? (
     <Spinner />
   ) : (
-    <>
+    <div>
       <div className="d-flex">
         <button className="btn btn-light ms-auto" onClick={deleteNoteHandler}>
           X
@@ -34,7 +34,7 @@ const NoteItem = (props) => {
         ))}
         <p>Created at: {noteCreated}</p>
       </Link>
-    </>
+    </div>
   );
 
   return <Card className="text-center d-flex justify-content-center p-3 h-100">{content}</Card>;
