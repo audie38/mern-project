@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function NavBar() {
+  const isLoggedIn = useSelector((state) => state.auth.userInfo);
   return (
     <nav className="navbar navbar-expand-lg navbar-warning bg-warning">
       <div className="container">
@@ -12,13 +14,25 @@ export default function NavBar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ms-auto">
-            <NavLink to="/note" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-              Note
-            </NavLink>
-            <NavLink to="/login" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-              Login
-              <i className="fa-solid fa-user ms-2"></i>
-            </NavLink>
+            {!isLoggedIn && (
+              <>
+                <NavLink to="/login" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+                  Login
+                  <i className="fa-solid fa-user ms-2"></i>
+                </NavLink>
+              </>
+            )}
+            {isLoggedIn && (
+              <>
+                <NavLink to="/note" className={({ isActive }) => (isActive ? "nav-link align-self-lg-center active" : "nav-link align-self-lg-center")}>
+                  Note
+                </NavLink>
+                <NavLink to="/" className={({ isActive }) => (isActive ? "btn btn-danger active" : "btn btn-danger")}>
+                  Logout
+                  <i className="fa-solid fa-right-from-bracket ms-2"></i>
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
       </div>
