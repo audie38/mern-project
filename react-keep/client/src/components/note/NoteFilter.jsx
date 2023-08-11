@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { searchNotes } from "../../store/note/noteActions";
 
-let initialState = true;
-
 const NoteFilter = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchInput, setSearchInput] = useState(false);
 
   const setSearchQueryHandler = (event) => {
     setSearchQuery(event.target.value);
+    setSearchInput(true);
   };
 
   const onSearchHandler = (event) => {
@@ -18,12 +18,10 @@ const NoteFilter = () => {
   };
 
   useEffect(() => {
-    if (initialState) {
-      initialState = false;
-      return;
+    if (searchInput) {
+      dispatch(searchNotes(searchQuery));
     }
-    dispatch(searchNotes(searchQuery));
-  }, [dispatch, searchQuery]);
+  }, [dispatch, searchQuery, searchInput]);
 
   return (
     <div className="d-flex justify-content-center align-items-center">

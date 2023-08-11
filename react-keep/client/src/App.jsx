@@ -1,19 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { fetchNotesData, fetchNoteDataById } from "./store/note/noteActions";
 
 import Root from "./components/layout/Root";
 import Private from "./components/layout/Private";
 import Public from "./components/layout/Public";
-import Error from "./pages/Error";
 
-import Note from "./pages/note/Note";
-import NoteAddEdit from "./pages/note/NoteAddEdit";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-
-let initStart = true;
+const Error = lazy(() => import("./pages/Error"));
+const Note = lazy(() => import("./pages/note/Note"));
+const NoteAddEdit = lazy(() => import("./pages/note/NoteAddEdit"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const Register = lazy(() => import("./pages/auth/Register"));
 
 export default function App() {
   const dispatch = useDispatch();
@@ -30,7 +28,9 @@ export default function App() {
           index: true,
           element: (
             <Private>
-              <Note />
+              <Suspense fallback={<p className="text-center">Loading...</p>}>
+                <Note />
+              </Suspense>
             </Private>
           ),
         },
@@ -46,7 +46,9 @@ export default function App() {
           path: "/note/:id",
           element: (
             <Private>
-              <NoteAddEdit />
+              <Suspense>
+                <NoteAddEdit />
+              </Suspense>
             </Private>
           ),
           loader: async ({ params }) => {
@@ -74,10 +76,9 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    if (initStart || refresh) {
+    if (refresh) {
       dispatch(fetchNotesData());
     }
-    initStart = false;
   }, [dispatch, refresh]);
 
   return <RouterProvider router={router} />;
